@@ -27,7 +27,8 @@ DEFAULT_FILE = "HI-Small_Trans.csv"
 
 def main():
     print("Downloading IBM AML dataset (this may take a moment)...")
-    path = kagglehub.dataset_download(DATASET)
+    path_str = kagglehub.dataset_download(DATASET)
+    path = Path(path_str)
     print(f"Downloaded to: {path}")
 
     # Copy default CSV into Data/ so pipeline finds it without relying on cache layout
