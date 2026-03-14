@@ -21,6 +21,12 @@ DEFAULT_SQLITE_PATH = PROJECT_ROOT / "outputs" / "fraud_backend.db"
 # Model
 MODEL_URL = os.getenv("MODEL_URL", "")
 MODEL_PATH = os.getenv("MODEL_PATH", "")
+# Default GNN checkpoint (torch.save: model_state_dict, config, input_dim, model_name, feature_set)
+DEFAULT_GNN_MODEL_PATH = PROJECT_ROOT / "model" / "run_1_GraphSAGE_A+B_(Synergy).pkl"
+if not MODEL_PATH and DEFAULT_GNN_MODEL_PATH.exists():
+    MODEL_PATH = str(DEFAULT_GNN_MODEL_PATH)
+elif not MODEL_PATH:
+    MODEL_PATH = ""
 
 # Risk
 RISK_THRESHOLD = float(os.getenv("RISK_THRESHOLD", "0.7"))
