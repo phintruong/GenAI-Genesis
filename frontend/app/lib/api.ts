@@ -83,8 +83,8 @@ function toRisk(value: string): 'normal' | 'suspicious' | 'laundering' {
 
 export async function loadGraphFromCSV(): Promise<GraphData> {
   const [nodesRes, edgesRes] = await Promise.all([
-    fetch('/data/nodes.csv'),
-    fetch('/data/edges.csv'),
+    fetch('/node_data/nodes.csv'),
+    fetch('/node_data/edges.csv'),
   ]);
 
   if (!nodesRes.ok) throw new Error('Could not load nodes.csv');
