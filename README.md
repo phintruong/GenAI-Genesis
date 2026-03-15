@@ -63,7 +63,7 @@ Raw CSV Data
 
 ## Railtracks: The Intelligence Behind the Explanations
 
-**[Railtracks](https://railtracks.ai)** is the orchestration backbone that makes our AI explanations reliable, structured, and multi-perspective. Rather than sending a single prompt to an LLM and hoping for the best, Railtracks lets us compose a **pipeline of specialized AI agents** — each with its own role, system prompt, and domain focus — that build on each other's reasoning.
+**[Railtracks](https://github.com/RailtownAI/railtracks)** is the orchestration backbone that makes our AI explanations reliable, structured, and multi-perspective. Rather than sending a single prompt to an LLM and hoping for the best, Railtracks lets us compose a **pipeline of specialized AI agents** — each with its own role, system prompt, and domain focus — that build on each other's reasoning.
 
 This is not a wrapper around a chat API. Railtracks provides a **declarative agent graph** where we define nodes (agents), connect them into flows, and let the framework handle execution, context passing, and fallback logic. It gave us the architecture to move from "ask an LLM a question" to "run a structured, reproducible AI investigation."
 
