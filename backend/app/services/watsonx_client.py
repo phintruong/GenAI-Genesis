@@ -1,12 +1,56 @@
-"""Watsonx.ai client for generating investigation summaries. No caching here; caller uses DB cache."""
+"""Watsonx.ai client for generating investigation summaries. No caching here; caller uses DB cache.
+
+Tries IBM Watsonx first; falls back to Gemini via LiteLLM when Watsonx is
+unavailable (missing credentials, project misconfiguration, etc.).
+"""
 
 import logging
+import os
+import time
 from typing import List, Tuple
+
+import requests
 
 from app.config import WATSONX_APIKEY, WATSONX_PROJECT_ID, WATSONX_URL, WATSONX_MODEL_ID
 
 logger = logging.getLogger(__name__)
-WATSONX_TIMEOUT = 5
+WATSONX_TIMEOUT = 30
+
+# IAM token cache
+_iam_token: str = ""
+_iam_token_expiry: float = 0.0
+
+
+def _get_iam_token() -> str:
+    """Exchange WATSONX_APIKEY for an IAM Bearer token, with caching."""
+    global _iam_token, _iam_token_expiry
+    if _iam_token and time.time() < _iam_token_expiry - 60:
+        return _iam_token
+
+    resp = requests.post(
+        "https://iam.cloud.ibm.com/identity/token",
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={
+            "grant_type": "urn:ibm:params:oauth:grant-type:apikey",
+            "apikey": WATSONX_APIKEY,
+        },
+        timeout=15,
+    )
+    resp.raise_for_status()
+    body = resp.json()
+    _iam_token = body["access_token"]
+    _iam_token_expiry = body.get("expiration", time.time() + 3600)
+    return _iam_token
+
+
+def _gemini_fallback(prompt: str) -> str:
+    """Call Gemini via LiteLLM as fallback when Watsonx is unavailable."""
+    import litellm
+    resp = litellm.completion(
+        model="gemini/gemini-3-flash-preview",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return (resp.choices[0].message.content or "").strip()[:1500]
 
 
 def _build_prompt(transaction_row: dict, top_features: List[Tuple[str, float]] = None) -> str:
@@ -58,39 +102,34 @@ def generate_summary(
     """
     prompt = _build_prompt(transaction_row, top_features)
 
-    try:
-        # Prefer official SDK
+    # Try Watsonx first
+    if WATSONX_APIKEY and WATSONX_PROJECT_ID:
         try:
-            from ibm_watsonx_ai import APIClient
-            from ibm_watsonx_ai.foundation_models import ModelInference
+            token = _get_iam_token()
+            base = (WATSONX_URL or "https://us-south.ml.cloud.ibm.com").rstrip("/")
+            url = f"{base}/ml/v1/text/generation?version=2024-05-31"
+            headers = {
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+            payload = {
+                "input": prompt,
+                "model_id": WATSONX_MODEL_ID,
+                "project_id": WATSONX_PROJECT_ID,
+                "parameters": {"max_new_tokens": 200},
+            }
+            r = requests.post(url, json=payload, headers=headers, timeout=WATSONX_TIMEOUT)
+            r.raise_for_status()
+            data = r.json()
+            text = (data.get("results", [{}])[0].get("generated_text", "") or "").strip()
+            return text[:1500]
+        except Exception as e:
+            logger.warning("Watsonx failed, falling back to Gemini: %s", e)
 
-            client = APIClient(api_key=WATSONX_APIKEY)
-            client.set.default_project(WATSONX_PROJECT_ID)
-            model = ModelInference(model_id=WATSONX_MODEL_ID, params={"max_new_tokens": 200})
-            response = model.generate(prompt, timeout=WATSONX_TIMEOUT)
-            text = response.get("results", [{}])[0].get("generated_text", "") if isinstance(response, dict) else str(response)
-            return (text or "")[:1500].strip()
-        except ImportError:
-            pass
-
-        # Fallback: HTTP POST to generate endpoint
-        import requests
-        url = (WATSONX_URL or "https://us-south.ml.cloud.ibm.com/ml/v1").rstrip("/") + "/text/generation"
-        headers = {
-            "Authorization": f"Bearer {WATSONX_APIKEY}",
-            "Content-Type": "application/json",
-        }
-        payload = {
-            "input": prompt,
-            "model_id": WATSONX_MODEL_ID,
-            "project_id": WATSONX_PROJECT_ID,
-            "parameters": {"max_new_tokens": 200},
-        }
-        r = requests.post(url, json=payload, headers=headers, timeout=WATSONX_TIMEOUT)
-        r.raise_for_status()
-        data = r.json()
-        text = (data.get("results", [{}])[0].get("generated_text", "") or "").strip()
-        return text[:1500]
+    # Fallback to Gemini
+    try:
+        return _gemini_fallback(prompt)
     except Exception as e:
-        logger.exception("watsonx generate_summary failed: %s", e)
-        raise RuntimeError(f"watsonx summary generation failed: {e}") from e
+        logger.exception("Both Watsonx and Gemini failed: %s", e)
+        raise RuntimeError(f"AI summary generation failed: {e}") from e
