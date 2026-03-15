@@ -1,5 +1,3 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
-
 export interface GraphNode {
   id: string;
   risk: 'normal' | 'suspicious' | 'laundering';
@@ -8,6 +6,7 @@ export interface GraphNode {
   aiExplanation: string;
   role?: string;
   riskScore?: number;
+  cluster?: number;
 }
 
 export interface GraphLink {
@@ -21,99 +20,97 @@ export interface GraphData {
   links: GraphLink[];
 }
 
-interface FlaggedAccount {
-  account_id: string;
-  risk_score: number;
-  detected_patterns: string[];
-  investigator_explanation: string;
-  role: string;
-  fan_in: number;
-  fan_out: number;
+/**
+ * Parse a CSV string handling quoted fields (e.g. aiExplanation with commas).
+ * Returns an array of objects keyed by header names.
+ */
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+
+  const headers = parseCsvLine(lines[0]);
+  const rows: Record<string, string>[] = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCsvLine(lines[i]);
+    const row: Record<string, string> = {};
+    for (let j = 0; j < headers.length; j++) {
+      row[headers[j]] = values[j] ?? '';
+    }
+    rows.push(row);
+  }
+  return rows;
 }
 
-interface BackendGraph {
-  nodes: { id: string; label?: string; [key: string]: any }[];
-  edges: { from: string; to: string; amount: number; [key: string]: any }[];
+/** Parse a single CSV line respecting quoted fields. */
+function parseCsvLine(line: string): string[] {
+  const fields: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        fields.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+  }
+  fields.push(current);
+  return fields;
 }
 
-function riskLevel(score: number): 'normal' | 'suspicious' | 'laundering' {
-  if (score >= 0.9) return 'laundering';
-  if (score >= 0.7) return 'suspicious';
+function toRisk(value: string): 'normal' | 'suspicious' | 'laundering' {
+  if (value === 'laundering' || value === 'suspicious') return value;
   return 'normal';
 }
 
-export async function runPipeline(): Promise<GraphData> {
-  const res = await fetch(`${API_BASE}/pipeline/run`, { method: 'POST' });
-  if (!res.ok) throw new Error(`Pipeline failed: ${res.status}`);
-  const data = await res.json();
-
-  const flaggedMap = new Map<string, FlaggedAccount>();
-  for (const f of data.flagged_accounts ?? []) {
-    flaggedMap.set(String(f.account_id), f);
-  }
-
-  const riskScores: Record<string, number> = data.account_risk_scores ?? {};
-  const graph: BackendGraph = data.graph ?? { nodes: [], edges: [] };
-
-  const nodes: GraphNode[] = graph.nodes.map((n) => {
-    const id = String(n.id);
-    const flagged = flaggedMap.get(id);
-    const score = riskScores[id] ?? riskScores[n.id] ?? 0;
-    return {
-      id,
-      risk: riskLevel(score),
-      txCount: (flagged?.fan_in ?? 0) + (flagged?.fan_out ?? 0),
-      pattern: flagged?.detected_patterns?.join(', ') || 'None',
-      aiExplanation: flagged?.investigator_explanation || 'No anomalies detected.',
-      role: flagged?.role,
-      riskScore: score,
-    };
-  });
-
-  const links: GraphLink[] = graph.edges.map((e) => ({
-    source: String(e.from),
-    target: String(e.to),
-    amount: e.amount,
-  }));
-
-  return { nodes, links };
-}
-
-export async function fetchGraph(): Promise<GraphData> {
-  const [graphRes, flaggedRes] = await Promise.all([
-    fetch(`${API_BASE}/graph`),
-    fetch(`${API_BASE}/flagged`),
+export async function loadGraphFromCSV(): Promise<GraphData> {
+  const [nodesRes, edgesRes] = await Promise.all([
+    fetch('/data/nodes.csv'),
+    fetch('/data/edges.csv'),
   ]);
 
-  if (!graphRes.ok) throw new Error(`Graph fetch failed: ${graphRes.status}`);
+  if (!nodesRes.ok) throw new Error('Could not load nodes.csv');
+  if (!edgesRes.ok) throw new Error('Could not load edges.csv');
 
-  const graph: BackendGraph = await graphRes.json();
-  const flagged: FlaggedAccount[] = flaggedRes.ok ? await flaggedRes.json() : [];
+  const nodesText = await nodesRes.text();
+  const edgesText = await edgesRes.text();
 
-  const flaggedMap = new Map<string, FlaggedAccount>();
-  for (const f of flagged) {
-    flaggedMap.set(String(f.account_id), f);
-  }
+  const nodesRaw = parseCSV(nodesText);
+  const edgesRaw = parseCSV(edgesText);
 
-  const nodes: GraphNode[] = graph.nodes.map((n) => {
-    const id = String(n.id);
-    const f = flaggedMap.get(id);
-    const score = f?.risk_score ?? 0;
-    return {
-      id,
-      risk: riskLevel(score),
-      txCount: (f?.fan_in ?? 0) + (f?.fan_out ?? 0),
-      pattern: f?.detected_patterns?.join(', ') || 'None',
-      aiExplanation: f?.investigator_explanation || 'No anomalies detected.',
-      role: f?.role,
-      riskScore: score,
-    };
-  });
+  const nodes: GraphNode[] = nodesRaw.map((r) => ({
+    id: r.id,
+    risk: toRisk(r.risk),
+    txCount: parseInt(r.txCount, 10) || 0,
+    pattern: r.pattern || 'None',
+    aiExplanation: r.aiExplanation || 'No anomalies detected.',
+    role: r.role || undefined,
+    riskScore: r.riskScore ? parseFloat(r.riskScore) : undefined,
+    cluster: r.cluster ? parseInt(r.cluster, 10) : undefined,
+  }));
 
-  const links: GraphLink[] = graph.edges.map((e) => ({
-    source: String(e.from),
-    target: String(e.to),
-    amount: e.amount,
+  const links: GraphLink[] = edgesRaw.map((r) => ({
+    source: r.source,
+    target: r.target,
+    amount: parseFloat(r.amount) || 0,
   }));
 
   return { nodes, links };

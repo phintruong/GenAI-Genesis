@@ -17,6 +17,7 @@ def pipeline_run(
     file_name: str | None = None,
     risk_threshold: float | None = None,
     max_flagged: int = 50,
+    max_rows: int = 100_000,
 ) -> dict[str, Any]:
     """Run full AML pipeline (load -> preprocess -> GNN -> Railtracks). Caches result for GET /flagged and GET /graph."""
     try:
@@ -25,6 +26,7 @@ def pipeline_run(
             file_name=file_name,
             risk_threshold=risk_threshold,
             max_flagged=max_flagged,
+            max_rows=max_rows,
         )
         return result.api_output
     except Exception as e:

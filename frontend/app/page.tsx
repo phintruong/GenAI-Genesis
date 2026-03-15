@@ -3,7 +3,7 @@
 import { type PointerEvent as ReactPointerEvent, useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Sidebar from './components/Sidebar';
-import { type GraphData, runPipeline, fetchGraph } from './lib/api';
+import { type GraphData, loadGraphFromCSV } from './lib/api';
 import { Moon, Sun, Search, Loader2 } from 'lucide-react';
 
 const NetworkGraph = dynamic(() => import('./components/NetworkGraph'), { ssr: false });
@@ -19,26 +19,24 @@ export default function Dashboard() {
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [pipelineRunning, setPipelineRunning] = useState(false);
 
-  // Load data: try cached graph first, show message if no data yet
+  // Load data from CSV files in public/data/
   const loadData = useCallback(async () => {
-    if (pipelineRunning) return; // prevent duplicate calls
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchGraph();
+      const data = await loadGraphFromCSV();
       if (data.nodes.length > 0) {
         setGraphData(data);
       } else {
-        setError('No data yet. Click "Run Pipeline" to analyze transactions.');
+        setError('No data found. Run the backend pipeline first to generate CSV files.');
       }
     } catch {
-      setError('No data yet. Click "Run Pipeline" to analyze transactions.');
+      setError('Could not load CSV data. Run the backend pipeline first to generate CSV files.');
     } finally {
       setLoading(false);
     }
-  }, [pipelineRunning]);
+  }, []);
 
   useEffect(() => {
     loadData();
@@ -95,32 +93,6 @@ export default function Dashboard() {
         </h1>
 
         <div className="flex items-center gap-3">
-          {/* Run Pipeline */}
-          <button
-            onClick={async () => {
-              setPipelineRunning(true);
-              setError(null);
-              try {
-                const data = await runPipeline();
-                setGraphData(data);
-                setSelectedAccount(null);
-              } catch (err: any) {
-                setError(err.message);
-              } finally {
-                setPipelineRunning(false);
-              }
-            }}
-            disabled={pipelineRunning}
-            className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-              isDarkMode
-                ? 'border-slate-700 text-slate-300 hover:bg-slate-800 disabled:opacity-50'
-                : 'border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-50'
-            }`}
-          >
-            {pipelineRunning && <Loader2 size={14} className="animate-spin" />}
-            {pipelineRunning ? 'Running...' : 'Run Pipeline'}
-          </button>
-
           {/* Search */}
           <div className="relative">
             <Search className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} size={16} />
@@ -148,14 +120,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 3D Graph */}
+      {/* 2D Graph */}
       <div className="h-full w-full" style={{ paddingRight: selectedAccount ? sidebarWidth : 0 }}>
         {loading ? (
           <div className="flex h-full items-center justify-center">
             <div className="flex flex-col items-center gap-3">
               <Loader2 size={32} className={`animate-spin ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
               <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                {pipelineRunning ? 'Running pipeline (this may take a minute)...' : 'Loading graph data...'}
+                Loading graph data...
               </p>
             </div>
           </div>

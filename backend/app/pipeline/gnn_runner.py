@@ -1,5 +1,8 @@
-"""Load GNN, build graph from DataFrame, run inference, return scored df and account risk scores."""
+"""Load GNN, load pre-computed features, run full-graph inference, return scored df and account risk scores."""
 
+import json
+import logging
+import pickle
 from pathlib import Path
 from typing import Any
 
@@ -7,41 +10,44 @@ import numpy as np
 import pandas as pd
 import torch
 
-from app.config import MODEL_PATH, MODEL_DIR, MODEL_FEATURE_COLUMNS
+from app.config import MODEL_PATH, MODEL_DIR
 from app.models.gnn_models import load_gnn_model
 
-FEATURE_COLUMNS = MODEL_FEATURE_COLUMNS
+logger = logging.getLogger(__name__)
+
+# Pre-computed feature/graph data directory
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
+PROCESSED_DATA_DIR = _BACKEND_DIR / "data" / "kaggle" / "working" / "processed_data"
+FEATURE_DIR = PROCESSED_DATA_DIR / "features"
+META_DIR = PROCESSED_DATA_DIR / "metadata"
 
 
-def _build_graph_from_df(
-    df: pd.DataFrame,
-    input_dim: int,
-) -> tuple[torch.Tensor, torch.Tensor, dict[int, int], list]:
-    """Build (x, edge_index, account_to_idx, account_order) from preprocessed df."""
-    src_col, dst_col = "Account", "Account.1" if "Account.1" in df.columns else "Account"
-    all_ids = pd.Index(df[src_col].unique().tolist() + df[dst_col].unique().tolist()).unique()
-    account_order = all_ids.tolist()
-    account_to_idx = {int(aid): i for i, aid in enumerate(account_order)}
-    n_nodes = len(account_order)
-    use_cols = [c for c in FEATURE_COLUMNS if c in df.columns]
-    if not use_cols:
-        use_cols = [c for c in df.columns if df[c].dtype in (np.number, "int64", "float64")][:input_dim]
-    feat_from = df.groupby(src_col)[use_cols].mean()
-    feat_to = df.groupby(dst_col)[use_cols].mean() if dst_col in df.columns else feat_from
-    agg_df = feat_from.reindex(account_order).fillna(feat_to.reindex(account_order)).fillna(0)
-    feat = agg_df.values.astype(np.float32)
-    if feat.shape[1] < input_dim:
-        pad = np.zeros((n_nodes, input_dim - feat.shape[1]), dtype=np.float32)
-        feat = np.hstack([feat, pad])
-    elif feat.shape[1] > input_dim:
-        feat = feat[:, :input_dim]
-    x = torch.from_numpy(feat)
-    src_idx = df[src_col].map(account_to_idx)
-    dst_idx = df[dst_col].map(account_to_idx)
-    valid = src_idx.notna() & dst_idx.notna()
-    edge_index = np.stack([src_idx[valid].astype(int).values, dst_idx[valid].astype(int).values], axis=0)
-    edge_index = torch.from_numpy(edge_index).long()
-    return x, edge_index, account_to_idx, account_order
+def _load_precomputed(device: torch.device) -> dict:
+    """Load pre-computed features (A+B), graph topology, and account maps."""
+    # Load base graph data (edge_index, y, num_nodes)
+    base_data = torch.load(META_DIR / "base_graph_data.pt", map_location=device, weights_only=False)
+    edge_index = base_data.edge_index
+    y = base_data.y
+
+    # Load account mappings
+    with open(META_DIR / "account_maps.pkl", "rb") as f:
+        maps = pickle.load(f)
+    account_to_id = maps["account_to_id"]
+    id_to_account = maps["id_to_account"]
+
+    # Load feature blocks A (behavioral, 54-dim) and B (random walk, 4-dim)
+    X_a = torch.load(FEATURE_DIR / "features_behavioral_test.pt", weights_only=False)
+    X_b = torch.load(FEATURE_DIR / "features_random_walk_test.pt", weights_only=False)
+    X = torch.cat([X_a, X_b], dim=1)
+
+    return {
+        "X": X,
+        "edge_index": edge_index,
+        "y": y,
+        "account_to_id": account_to_id,
+        "id_to_account": id_to_account,
+        "N": base_data.num_nodes,
+    }
 
 
 def run_gnn(
@@ -49,8 +55,9 @@ def run_gnn(
     model_path: str | Path | None = None,
 ) -> tuple[pd.DataFrame, dict[str, float]]:
     """
-    Load GNN from model_path (or MODEL_PATH), build graph from df, score.
-    Returns (scored_df with risk_score and top_features, account_risk_scores).
+    Load GNN and pre-computed features, run full-graph inference, then map
+    risk scores back to the accounts/transactions in df.
+    Returns (scored_df with risk_score, account_risk_scores dict).
     """
     path = model_path or MODEL_PATH
     if not path or not str(path).strip():
@@ -59,27 +66,65 @@ def run_gnn(
     if not path.is_absolute():
         candidate = MODEL_DIR / path.name
         path = candidate if candidate.exists() else path
-    # Fallback input_dim from feature columns when checkpoint has state_dict only
-    fallback_input_dim = len([c for c in FEATURE_COLUMNS if c in df.columns])
-    model, input_dim = load_gnn_model(path, input_dim=fallback_input_dim or None)
-    x, edge_index, account_to_idx, account_order = _build_graph_from_df(df, input_dim)
-    device = next(model.parameters()).device
+
+    if not PROCESSED_DATA_DIR.exists():
+        raise FileNotFoundError(
+            f"Pre-computed features not found at {PROCESSED_DATA_DIR}. "
+            "Run the GNN training notebook first to generate them."
+        )
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Load pre-computed features and graph
+    logger.info("Loading pre-computed features from %s", PROCESSED_DATA_DIR)
+    data = _load_precomputed(device)
+    X = data["X"].to(device)
+    edge_index = data["edge_index"].to(device)
+    account_to_id = data["account_to_id"]
+    id_to_account = data["id_to_account"]
+    N = data["N"]
+
+    logger.info("Loaded %d nodes, %d edges, feature dim=%d", N, edge_index.shape[1], X.shape[1])
+
+    # Load model
+    model, input_dim = load_gnn_model(path)
+    assert X.shape[1] == input_dim, (
+        f"Feature dim mismatch: pre-computed={X.shape[1]}, model expects={input_dim}"
+    )
+
+    # Run full-graph inference
+    model.eval()
     with torch.no_grad():
-        log_probs = model(x.to(device), edge_index.to(device))
+        log_probs = model(X, edge_index)
     prob_pos = log_probs.exp()[:, 1].cpu().numpy()
-    # Map node index -> account (order is account_order which may be int)
-    id_to_account = {i: str(account_order[i]) for i in range(len(account_order))}
-    account_risk_scores = {}
-    for node_idx in range(len(prob_pos)):
+
+    logger.info(
+        "GNN inference done: risk_score range [%.4f, %.4f], flagged=%d (>=0.5)",
+        prob_pos.min(), prob_pos.max(), (prob_pos >= 0.5).sum(),
+    )
+
+    # Build account_risk_scores: account_id (str) -> max risk score
+    account_risk_scores: dict[str, float] = {}
+    for node_idx in range(N):
         acc = id_to_account.get(node_idx)
         if acc is not None:
-            if acc not in account_risk_scores or prob_pos[node_idx] > account_risk_scores[acc]:
-                account_risk_scores[acc] = float(prob_pos[node_idx])
-    # Map each transaction to risk of its "from" account (factorized Account)
-    node_idx = df["Account"].map(account_to_idx)
-    node_idx = node_idx.fillna(0).astype(int).clip(0, len(prob_pos) - 1)
-    risk_scores = np.clip(prob_pos[node_idx.values], 0.0, 1.0).astype(np.float64)
+            acc_str = str(acc)
+            score = float(prob_pos[node_idx])
+            if acc_str not in account_risk_scores or score > account_risk_scores[acc_str]:
+                account_risk_scores[acc_str] = score
+
+    # Map each transaction row to the risk score of its "from" account
+    src_col = "Account"
     out = df.copy()
-    out["risk_score"] = risk_scores
+    risk_scores = []
+    for acc in df[src_col]:
+        acc_str = str(acc)
+        if acc_str in account_risk_scores:
+            risk_scores.append(account_risk_scores[acc_str])
+        else:
+            # Account not in the pre-computed graph — default to 0
+            risk_scores.append(0.0)
+
+    out["risk_score"] = np.array(risk_scores, dtype=np.float64)
     out["top_features"] = [[]] * len(out)
     return out, account_risk_scores

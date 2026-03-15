@@ -57,9 +57,15 @@ def flagged():
     return get_flagged_view()
 
 
+@app.get("/graph")
+def graph_all():
+    """Return full graph (nodes, edges) from last run."""
+    return get_graph_view()
+
+
 @app.get("/graph/{id}")
-def graph(id: str | None = None):
-    """Return graph (nodes, edges) from last run. id = account_id to filter subgraph."""
+def graph(id: str):
+    """Return subgraph for a specific account_id."""
     return get_graph_view(id=id)
 
 

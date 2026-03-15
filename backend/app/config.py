@@ -18,6 +18,7 @@ load_dotenv()
 DATASETS_DIR = PROJECT_ROOT / "datasets" / "ibm_aml"
 DEFAULT_DATASET_FILE = "HI-Small_Trans.csv"
 DATASET_SOURCE = os.getenv("DATASET_SOURCE", "ibm")  # "ibm" or path to CSV
+DISPLAY_ACCOUNTS_CSV = PROJECT_ROOT / "100_accounts.csv"
 
 # Backend-owned dirs
 BACKEND_DIR = _BACKEND_DIR

@@ -62,9 +62,7 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
     amount_recv = pd.to_numeric(df["Amount Received"], errors="coerce").fillna(0)
     out["amount_ratio"] = (amount / (amount_recv + 1e-6)).values
     ts_sec = ts.astype("int64") // 10**9
-    last_tx = df.groupby("Account")["Timestamp"].transform(
-        lambda x: pd.to_datetime(x, errors="coerce").astype("int64").shift(1) // 10**9
-    )
+    last_tx = ts_sec.groupby(df["Account"]).shift(1)
     out["time_since_last_tx"] = (ts_sec - last_tx.fillna(ts_sec)).fillna(0).values
     out["device_change_flag"] = 0
     if "Payment Format" in df.columns:

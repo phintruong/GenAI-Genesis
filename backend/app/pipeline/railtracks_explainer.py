@@ -19,7 +19,7 @@ def _get_connections_for_account(
     return out
 
 
-def _call_llm(system: str, user: str, model_gemini: str = "gemini/gemini-2.0-flash") -> str:
+def _call_llm(system: str, user: str, model_gemini: str = "gemini/gemini-3-flash-preview") -> str:
     """Single completion via LiteLLM (Gemini), Railtracks, or static fallback."""
     # Primary: LiteLLM with Gemini
     if os.environ.get("GEMINI_API_KEY"):

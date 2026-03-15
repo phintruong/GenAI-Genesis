@@ -24,7 +24,7 @@ def get_dataset_path(source: str | None = None, file_name: str | None = None) ->
     return path
 
 
-def load_dataset(source: str | None = None, file_name: str | None = None) -> pd.DataFrame:
+def load_dataset(source: str | None = None, file_name: str | None = None, max_rows: int | None = None) -> pd.DataFrame:
     """Load transaction CSV. source='ibm' uses datasets/ibm_aml, else path to CSV."""
     path = get_dataset_path(source=source, file_name=file_name)
-    return pd.read_csv(path)
+    return pd.read_csv(path, nrows=max_rows)

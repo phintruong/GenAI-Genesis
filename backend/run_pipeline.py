@@ -31,13 +31,14 @@ def main():
     parser.add_argument("--risk-threshold", type=float, default=None, help="Risk threshold for flagged accounts")
     parser.add_argument("--max-flagged", type=int, default=50, help="Max flagged accounts")
     args = parser.parse_args()
-    run_pipeline(
+    result = run_pipeline(
         source=args.source,
         file_name=args.file_name,
         risk_threshold=args.risk_threshold,
         max_flagged=args.max_flagged,
     )
     logger.info("Pipeline finished.")
+    logger.info("Frontend CSVs exported to: frontend/public/data/nodes.csv and edges.csv")
 
 
 if __name__ == "__main__":

@@ -13,8 +13,10 @@ import pandas as pd
 
 from app.config import (
     DATASET_SOURCE,
+    DISPLAY_ACCOUNTS_CSV,
     OUTPUT_DIR,
     PREDICTIONS_PARQUET,
+    PROJECT_ROOT,
     RISK_THRESHOLD,
 )
 from app.pipeline.loader import load_dataset
@@ -54,6 +56,7 @@ def run_pipeline(
     risk_threshold: float | None = None,
     max_flagged: int = 50,
     model_path: str | Path | None = None,
+    max_rows: int | None = 100_000,
 ) -> PipelineResult:
     """
     Load dataset -> preprocess -> build graph -> run GNN -> save to DB/parquet ->
@@ -64,7 +67,7 @@ def run_pipeline(
     threshold = risk_threshold if risk_threshold is not None else RISK_THRESHOLD
 
     logger.info("Loading dataset from source=%s", src)
-    raw_df = load_dataset(source=src, file_name=file_name)
+    raw_df = load_dataset(source=src, file_name=file_name, max_rows=max_rows)
     logger.info("Loaded %d rows", len(raw_df))
 
     df = preprocess(raw_df)
@@ -120,6 +123,29 @@ def run_pipeline(
         fa["fan_in"] = role_info.get("fan_in", 0)
         fa["fan_out"] = role_info.get("fan_out", 0)
 
+    # Filter graph to display accounts only (100_accounts.csv)
+    display_ids: set[str] | None = None
+    if DISPLAY_ACCOUNTS_CSV.exists():
+        try:
+            display_df = pd.read_csv(DISPLAY_ACCOUNTS_CSV)
+            display_ids = set()
+            for col in ["Account", "Account.1"]:
+                if col in display_df.columns:
+                    display_ids.update(display_df[col].astype(str).unique())
+            logger.info("Display filter: %d unique accounts from %s", len(display_ids), DISPLAY_ACCOUNTS_CSV.name)
+        except Exception as e:
+            logger.warning("Could not load display accounts CSV: %s", e)
+
+    if display_ids:
+        display_nodes = [n for n in graph_nodes if str(n.get("id", "")) in display_ids]
+        display_edges = [
+            e for e in graph_edges
+            if str(e.get("from", "")) in display_ids and str(e.get("to", "")) in display_ids
+        ]
+    else:
+        display_nodes = graph_nodes
+        display_edges = graph_edges
+
     api_output = {
         "flagged_accounts": [
             {
@@ -137,18 +163,21 @@ def run_pipeline(
             }
             for fa in flagged_accounts
         ],
-        "graph": {"nodes": graph_nodes, "edges": graph_edges},
+        "graph": {"nodes": display_nodes, "edges": display_edges},
         "analysis": analysis,
         "account_risk_scores": account_risk_scores,
         "meta": {
             "total_flagged": len(flagged_accounts),
-            "total_nodes": len(graph_nodes),
-            "total_edges": len(graph_edges),
+            "total_nodes": len(display_nodes),
+            "total_edges": len(display_edges),
             "total_clusters": len(analysis["clusters"]),
             "total_flows": len(analysis["top_flows"]),
         },
     }
     _last_run_output = api_output
+
+    # Export frontend-ready CSVs
+    _export_frontend_csvs(api_output, account_risk_scores)
 
     return PipelineResult(
         scored_df=scored_df,
@@ -159,3 +188,67 @@ def run_pipeline(
         flagged_accounts=flagged_accounts,
         api_output=api_output,
     )
+
+
+def _risk_level(score: float) -> str:
+    if score >= 0.9:
+        return "laundering"
+    if score >= 0.7:
+        return "suspicious"
+    return "normal"
+
+
+def _export_frontend_csvs(
+    api_output: dict[str, Any],
+    account_risk_scores: dict[str, float],
+) -> None:
+    """Export nodes.csv and edges.csv for the frontend to consume statically."""
+    frontend_data_dir = PROJECT_ROOT / "frontend" / "public" / "data"
+    frontend_data_dir.mkdir(parents=True, exist_ok=True)
+
+    graph = api_output.get("graph", {})
+    flagged = api_output.get("flagged_accounts", [])
+
+    # Build flagged lookup
+    flagged_map: dict[str, dict] = {}
+    for fa in flagged:
+        flagged_map[str(fa["account_id"])] = fa
+
+    # --- nodes.csv ---
+    nodes_rows = []
+    for node in graph.get("nodes", []):
+        nid = str(node.get("id", ""))
+        score = account_risk_scores.get(nid, account_risk_scores.get(node.get("id"), 0))
+        fa = flagged_map.get(nid, {})
+        fan_in = fa.get("fan_in", 0)
+        fan_out = fa.get("fan_out", 0)
+        patterns = fa.get("detected_patterns", [])
+        nodes_rows.append({
+            "id": nid,
+            "risk": _risk_level(score),
+            "riskScore": round(score, 4),
+            "txCount": fan_in + fan_out,
+            "pattern": ", ".join(patterns) if patterns else "None",
+            "aiExplanation": fa.get("investigator_explanation", "No anomalies detected."),
+            "role": fa.get("role", ""),
+            "cluster": fa.get("cluster_id", ""),
+        })
+
+    nodes_df = pd.DataFrame(nodes_rows)
+    nodes_path = frontend_data_dir / "nodes.csv"
+    nodes_df.to_csv(nodes_path, index=False)
+    logger.info("Exported %d nodes to %s", len(nodes_rows), nodes_path)
+
+    # --- edges.csv ---
+    edges_rows = []
+    for edge in graph.get("edges", []):
+        edges_rows.append({
+            "source": str(edge.get("from", "")),
+            "target": str(edge.get("to", "")),
+            "amount": edge.get("amount", 0),
+        })
+
+    edges_df = pd.DataFrame(edges_rows)
+    edges_path = frontend_data_dir / "edges.csv"
+    edges_df.to_csv(edges_path, index=False)
+    logger.info("Exported %d edges to %s", len(edges_rows), edges_path)
