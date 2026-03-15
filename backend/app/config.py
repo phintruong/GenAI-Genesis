@@ -10,7 +10,8 @@ _APP_DIR = Path(__file__).resolve().parent
 _BACKEND_DIR = _APP_DIR.parent
 PROJECT_ROOT = _BACKEND_DIR.parent
 
-# Load .env from project root so backend finds it when run from any cwd
+# Load .env from backend/ first (where it actually lives), then project root as fallback
+load_dotenv(_BACKEND_DIR / ".env")
 load_dotenv(PROJECT_ROOT / ".env")
 load_dotenv()
 
