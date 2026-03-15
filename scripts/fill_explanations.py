@@ -56,7 +56,7 @@ def _call_watsonx(prompt: str) -> str | None:
     """Call Watsonx Granite. Returns None on failure."""
     api_key = os.environ.get("WATSONX_APIKEY", "")
     project_id = os.environ.get("WATSONX_PROJECT_ID", "")
-    model_id = os.environ.get("WATSONX_MODEL_ID", "granite-13b-instruct")
+    model_id = os.environ.get("WATSONX_MODEL_ID", "ibm/granite-3-3-8b-instruct")
     base_url = os.environ.get("WATSONX_URL", "https://us-south.ml.cloud.ibm.com/ml/v1")
     if not api_key or not project_id:
         return None

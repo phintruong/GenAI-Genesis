@@ -46,7 +46,7 @@ RISK_THRESHOLD = max(0.0, min(1.0, RISK_THRESHOLD))
 WATSONX_URL = os.getenv("WATSONX_URL", "")
 WATSONX_APIKEY = os.getenv("WATSONX_APIKEY", "")
 WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
-WATSONX_MODEL_ID = os.getenv("WATSONX_MODEL_ID", "granite-13b-instruct")
+WATSONX_MODEL_ID = os.getenv("WATSONX_MODEL_ID", "ibm/granite-3-3-8b-instruct")
 
 # Logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()

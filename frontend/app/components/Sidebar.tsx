@@ -292,8 +292,8 @@ export default function Sidebar({
         </div>
 
         {selectedAccount && (
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="shrink-0 space-y-5">
+          <div className="scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#efe39a] dark:scrollbar-thumb-[#705f19] flex min-h-0 flex-1 flex-col overflow-y-auto pr-1">
+            <div className="space-y-5">
               <div
                 className={`rounded-2xl border p-4 shadow-sm transition-colors ${surfaceClasses}`}
               >

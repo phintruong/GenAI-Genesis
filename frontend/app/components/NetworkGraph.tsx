@@ -274,14 +274,20 @@ export default function NetworkGraph({ data, selectedNode, onNodeClick, isDarkMo
       if (!fgRef.current) return;
 
       if (selectedNode?.id !== node.id) {
-        const distance = 120;
-        const distRatio = 1 + distance / Math.max(1, Math.hypot(node.x ?? 0, node.y ?? 0, node.z ?? 0));
+        const nodeX = node.x ?? 0;
+        const nodeY = node.y ?? 0;
+        const nodeZ = node.z ?? 0;
+
+        // Third-person angled view from above — offset behind and elevated
+        const offsetBack = 200;
+        const offsetUp = 250;
+        const offsetSide = 120;
 
         fgRef.current.cameraPosition(
           {
-            x: (node.x ?? 0) * distRatio,
-            y: (node.y ?? 0) * distRatio,
-            z: (node.z ?? 0) * distRatio,
+            x: nodeX + offsetSide,
+            y: nodeY + offsetUp,
+            z: nodeZ + offsetBack,
           },
           node,
           1000
