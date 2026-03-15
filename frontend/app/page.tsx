@@ -7,7 +7,6 @@ import { type GraphData, loadGraphFromCSV } from './lib/api';
 import { Moon, Sun, Search, Loader2 } from 'lucide-react';
 
 const NetworkGraph = dynamic(() => import('./components/NetworkGraph'), { ssr: false });
-const TOP_BAR_HEIGHT = 64;
 const SIDEBAR_MIN_WIDTH = 320;
 const SIDEBAR_MAX_WIDTH = 640;
 
@@ -86,17 +85,23 @@ export default function Dashboard() {
   }, [isResizingSidebar]);
 
   return (
-    <div className={`relative h-screen w-screen overflow-hidden ${isDarkMode ? 'dark bg-slate-950' : 'bg-slate-200'}`}>
+    <div
+      className={`flex h-screen w-screen flex-col overflow-hidden ${isDarkMode ? 'dark bg-slate-950' : ''}`}
+      style={isDarkMode ? undefined : { backgroundColor: 'rgba(252, 246, 177, 0.28)' }}
+    >
       {/* Top Bar */}
-      <div className={`absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-3 backdrop-blur-md ${isDarkMode ? 'bg-slate-900/80 border-b border-slate-700' : 'bg-slate-300/90 border-b border-slate-500 shadow-sm'}`}>
-        <h1 className={`text-lg font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-950'}`}>
+      <div
+        className={`relative z-10 flex shrink-0 items-center justify-between border-b px-6 py-3 backdrop-blur-md ${isDarkMode ? 'border-[#2D1E2F]' : 'border-[#e7da7d] shadow-sm'}`}
+        style={isDarkMode ? { backgroundColor: '#120c13' } : { backgroundColor: '#e3dac9' }}
+      >
+        <h1 className={`text-lg font-bold tracking-tight ${isDarkMode ? 'text-[#fff7cc]' : 'text-[#2D1E2F]'}`}>
           GenAI Genesis — AML Network
         </h1>
 
         <div className="flex items-center gap-3">
           {/* Search */}
           <div className="relative">
-            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-slate-400' : 'text-slate-700'}`} size={16} />
+            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-[#f4e7a1]' : 'text-[#6a5a35]'}`} size={16} />
             <input
               type="text"
               value={globalSearch}
@@ -105,8 +110,8 @@ export default function Dashboard() {
               placeholder="Search account..."
               className={`rounded-lg border pl-9 pr-3 py-1.5 text-sm outline-none transition-colors ${
                 isDarkMode
-                  ? 'border-slate-700 bg-slate-800 text-white placeholder-slate-500 focus:border-slate-500'
-                  : 'border-slate-500 bg-slate-100 text-slate-950 placeholder-slate-600 focus:border-slate-700'
+                  ? 'border-[#2D1E2F] bg-[#1b121d] text-[#fff7cc] placeholder-[#9f8f58] focus:border-[#f4e7a1]'
+                  : 'border-[#e7da7d] bg-[#fffbe0] text-[#2D1E2F] placeholder-[#978850] focus:border-[#cdbf5e]'
               }`}
             />
           </div>
@@ -114,65 +119,60 @@ export default function Dashboard() {
           {/* Dark mode toggle */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`rounded-lg p-2 transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-400'}`}
+            className={`rounded-lg p-2 transition-colors ${isDarkMode ? 'text-[#f4e7a1] hover:text-[#fff7cc] hover:bg-[#1b121d]' : 'text-[#6a5a35] hover:text-[#2D1E2F] hover:bg-[#f3ea98]'}`}
           >
             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
       </div>
 
-      {/* 2D Graph */}
-      <div className="h-full w-full" style={{ paddingRight: selectedAccount ? sidebarWidth : 0 }}>
-        {loading ? (
-          <div className="flex h-full items-center justify-center">
-            <div className="flex flex-col items-center gap-3">
-              <Loader2 size={32} className={`animate-spin ${isDarkMode ? 'text-slate-400' : 'text-slate-700'}`} />
-              <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-700'}`}>
-                Loading graph data...
-              </p>
+      <div className="relative min-h-0 flex-1">
+        {/* 2D Graph */}
+        <div className="h-full w-full" style={{ paddingRight: selectedAccount ? sidebarWidth : 0 }}>
+          {loading ? (
+            <div className="flex h-full items-center justify-center">
+              <div className="flex flex-col items-center gap-3">
+                <Loader2 size={32} className={`animate-spin ${isDarkMode ? 'text-[#f4e7a1]' : 'text-[#8f804d]'}`} />
+                <p className={`text-sm ${isDarkMode ? 'text-[#f4e7a1]' : 'text-[#8f804d]'}`}>
+                  Loading graph data...
+                </p>
+              </div>
             </div>
-          </div>
-        ) : error ? (
-          <div className="flex h-full items-center justify-center">
-            <div className="flex flex-col items-center gap-3">
-              <p className="text-sm text-red-500">{error}</p>
-              <button onClick={loadData} className="rounded-lg border border-red-500 px-4 py-1.5 text-sm text-red-500 hover:bg-red-500/10">
-                Retry
-              </button>
+          ) : error ? (
+            <div className="flex h-full items-center justify-center">
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-sm text-red-500">{error}</p>
+                <button onClick={loadData} className="rounded-lg border border-red-500 px-4 py-1.5 text-sm text-red-500 hover:bg-red-500/10">
+                  Retry
+                </button>
+              </div>
             </div>
+          ) : (
+            <NetworkGraph
+              data={graphData}
+              selectedNode={selectedAccount}
+              onNodeClick={handleNodeClick}
+              isDarkMode={isDarkMode}
+            />
+          )}
+        </div>
+
+        {/* Sidebar */}
+        {selectedAccount && (
+          <div className="absolute top-0 right-0 h-full" style={{ width: sidebarWidth }}>
+            <Sidebar
+              selectedAccount={selectedAccount}
+              onClose={() => setSelectedAccount(null)}
+              allLinks={graphData.links}
+              onResizeStart={(e: ReactPointerEvent<HTMLDivElement>) => {
+                e.preventDefault();
+                setIsResizingSidebar(true);
+              }}
+              isDarkMode={isDarkMode}
+            />
           </div>
-        ) : (
-          <NetworkGraph
-            data={graphData}
-            selectedNode={selectedAccount}
-            onNodeClick={handleNodeClick}
-            isDarkMode={isDarkMode}
-          />
         )}
       </div>
-
-      {/* Sidebar */}
-      {selectedAccount && (
-        <div
-          className="absolute right-0"
-          style={{
-            top: TOP_BAR_HEIGHT,
-            width: sidebarWidth,
-            height: `calc(100% - ${TOP_BAR_HEIGHT}px)`,
-          }}
-        >
-          <Sidebar
-            selectedAccount={selectedAccount}
-            onClose={() => setSelectedAccount(null)}
-            allLinks={graphData.links}
-            onResizeStart={(e: ReactPointerEvent<HTMLDivElement>) => {
-              e.preventDefault();
-              setIsResizingSidebar(true);
-            }}
-            isDarkMode={isDarkMode}
-          />
-        </div>
-      )}
     </div>
   );
 }

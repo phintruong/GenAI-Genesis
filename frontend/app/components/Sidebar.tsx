@@ -18,17 +18,17 @@ export default function Sidebar({
   const isHighRisk = selectedAccount?.risk === 'laundering';
   const isMediumRisk = selectedAccount?.risk === 'suspicious';
   const panelClasses = isDarkMode
-    ? 'border-slate-700 bg-slate-900 text-slate-200'
-    : 'border-slate-500 bg-slate-300 text-slate-900';
-  const titleClasses = isDarkMode ? 'text-white' : 'text-slate-950';
-  const mutedTextClasses = isDarkMode ? 'text-slate-400' : 'text-slate-700';
-  const bodyTextClasses = isDarkMode ? 'text-slate-300' : 'text-slate-800';
+    ? 'border-[#5c4a11] bg-[#21181f] text-[#fdf4c6]'
+    : 'border-[#e7da7d] bg-[#fffbe0] text-[#2D1E2F]';
+  const titleClasses = isDarkMode ? 'text-[#fff7cc]' : 'text-[#2D1E2F]';
+  const mutedTextClasses = isDarkMode ? 'text-[#d9c874]' : 'text-[#6a5a35]';
+  const bodyTextClasses = isDarkMode ? 'text-[#f0df9b]' : 'text-[#4b394d]';
   const surfaceClasses = isDarkMode
-    ? 'border-slate-700 bg-slate-800'
-    : 'border-slate-400 bg-slate-100';
+    ? 'border-[#5c4a11] bg-[#2c2129]'
+    : 'border-[#efe39a] bg-[#fffdf1]';
   const resizeHandleClasses = isDarkMode
-    ? 'bg-slate-700 hover:bg-slate-500'
-    : 'bg-slate-500 hover:bg-slate-700';
+    ? 'bg-[#705f19] hover:bg-[#8b7720]'
+    : 'bg-[#efe39a] hover:bg-[#e7da7d]';
 
   const accountTransactions = allLinks.filter(link => {
     const sourceId = link.source.id || link.source;
@@ -65,7 +65,7 @@ export default function Sidebar({
         <h2 className={`text-xl font-bold tracking-tight ${titleClasses}`}>Account Details</h2>
         <button
           onClick={onClose}
-          className={`rounded-md p-2 text-4xl leading-none transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200'}`}
+          className={`rounded-md p-2 text-4xl leading-none transition-colors ${isDarkMode ? 'text-[#d9c874] hover:text-[#fff7cc] hover:bg-[#2c2129]' : 'text-[#6a5a35] hover:text-[#2D1E2F] hover:bg-[#fff7cc]'}`}
           aria-label="Close sidebar"
         >
           &times;
@@ -78,13 +78,13 @@ export default function Sidebar({
           <div className="space-y-6 shrink-0">
             <div>
               <p className={`mb-1 text-sm uppercase tracking-wider ${mutedTextClasses}`}>Account ID</p>
-              <p className={`text-2xl font-mono ${titleClasses}`}>{selectedAccount.id}</p>
+              <p className={`text-xl font-mono ${titleClasses}`}>{selectedAccount.id}</p>
               
               {/* Rest of your risk badge code remains exactly the same */}
-              <div className={`mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold
-                ${isHighRisk ? 'bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/20 dark:text-red-400 dark:border-red-500/50' : 
-                  isMediumRisk ? 'bg-orange-100 text-orange-700 border border-orange-200 dark:bg-orange-500/20 dark:text-orange-400 dark:border-orange-500/50' : 
-                  'bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-400 dark:border-blue-500/50'}`}>
+              <div className={`mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold
+                ${isHighRisk ? 'border border-[#e3170a]/30 bg-[#e3170a]/12 text-[#e3170a] dark:border-[#8f0e08]/60 dark:bg-[#8f0e08]/22 dark:text-[#e06b62]' : 
+                  isMediumRisk ? 'border border-[#F78D2A]/30 bg-[#F78D2A]/14 text-[#b85f14] dark:border-[#B85F14]/60 dark:bg-[#B85F14]/22 dark:text-[#f0a55f]' : 
+                  'border border-[#a9e5bb]/45 bg-[#a9e5bb]/30 text-[#4d6f56] dark:border-[#5B8A68]/60 dark:bg-[#5B8A68]/24 dark:text-[#b5d8bf]'}`}>
                 {isHighRisk && <AlertTriangle size={16} />}
                 {isMediumRisk && <Activity size={16} />}
                 {!isHighRisk && !isMediumRisk && <ShieldCheck size={16} />}
@@ -94,7 +94,7 @@ export default function Sidebar({
 
             <div>
               <h3 className={`mb-2 text-sm uppercase tracking-wider ${mutedTextClasses}`}>Pattern Detected</h3>
-              <p className={`font-semibold ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>{selectedAccount.pattern}</p>
+              <p className={`font-semibold ${isDarkMode ? 'text-slate-100' : 'text-stone-900'}`}>{selectedAccount.pattern}</p>
             </div>
 
             <div>
@@ -106,7 +106,7 @@ export default function Sidebar({
           </div>
 
           {/* Transactions List remains exactly the same */}
-          <div className={`flex flex-col flex-1 min-h-0 border-t pt-6 transition-colors ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}`}>
+          <div className={`flex flex-col flex-1 min-h-0 border-t pt-6 transition-colors ${isDarkMode ? 'border-[#5c4a11]' : 'border-[#efe39a]'}`}>
             <div className="mb-4 shrink-0">
               <label
                 htmlFor="counterparty-filter"
@@ -122,8 +122,8 @@ export default function Sidebar({
                 placeholder="Type an account ID"
                 className={`w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors ${
                   isDarkMode
-                    ? 'border-slate-700 bg-slate-800 text-white placeholder-slate-500 focus:border-slate-500'
-                    : 'border-slate-500 bg-slate-100 text-slate-950 placeholder-slate-600 focus:border-slate-700'
+                    ? 'border-[#5c4a11] bg-[#2c2129] text-[#fff7cc] placeholder-[#b7a867] focus:border-[#d9c874]'
+                    : 'border-[#e7da7d] bg-[#fffdf1] text-[#2D1E2F] placeholder-[#978850] focus:border-[#cdbf5e]'
                 }`}
               />
             </div>
@@ -133,7 +133,7 @@ export default function Sidebar({
               <span className={`text-xs ${mutedTextClasses}`}>{filteredTransactions.length} records</span>
             </div>
              
-            <div className="flex-1 overflow-y-auto pr-2 space-y-2 pb-4 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 scrollbar-track-transparent">
+            <div className="flex-1 overflow-y-auto pr-2 space-y-2 pb-4 scrollbar-thin scrollbar-thumb-[#efe39a] dark:scrollbar-thumb-[#705f19] scrollbar-track-transparent">
               {filteredTransactions.length === 0 ? (
                 <p className={`text-sm italic ${mutedTextClasses}`}>
                   {accountTransactions.length === 0 ? 'No connections found.' : 'No transactions match the selected user.'}
@@ -150,16 +150,16 @@ export default function Sidebar({
                       key={idx}
                       className={`flex flex-col gap-1 rounded-lg border p-3 transition-colors ${
                         isDarkMode
-                          ? `${surfaceClasses} hover:border-slate-500`
-                          : `${surfaceClasses} hover:border-slate-600`
+                          ? `${surfaceClasses} hover:border-[#8b7720]`
+                          : `${surfaceClasses} hover:border-[#e7da7d]`
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <div className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider ${isOutgoing ? 'text-orange-500 dark:text-orange-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                        <div className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider ${isOutgoing ? 'text-[#b85f14] dark:text-[#f0a55f]' : 'text-[#5c7c66] dark:text-[#b5d8bf]'}`}>
                           {isOutgoing ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
                           {isOutgoing ? 'Sent to' : 'Received from'}
                         </div>
-                        <div className={`font-mono text-sm font-semibold ${isDarkMode ? 'text-slate-200' : 'text-slate-950'}`}>
+                        <div className={`font-mono text-sm font-semibold ${isDarkMode ? 'text-slate-200' : 'text-stone-950'}`}>
                           ${tx.amount.toLocaleString()}
                         </div>
                       </div>
