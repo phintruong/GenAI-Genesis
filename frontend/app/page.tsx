@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [globalSearch, setGlobalSearch] = useState('');
   const [sidebarWidth, setSidebarWidth] = useState(384);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
+  const [viewMode, setViewMode] = useState<'3d' | '2d'>('3d');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -153,8 +154,50 @@ export default function Dashboard() {
               selectedNode={selectedAccount}
               onNodeClick={handleNodeClick}
               isDarkMode={isDarkMode}
+              viewMode={viewMode}
             />
           )}
+        </div>
+
+        {/* 2D/3D Toggle */}
+        <div className="absolute bottom-14 left-5 z-20">
+          <div
+            className={`flex rounded-lg overflow-hidden border backdrop-blur-md text-sm font-semibold ${
+              isDarkMode
+                ? 'border-[#2D1E2F]'
+                : 'border-[#e7da7d] shadow-sm'
+            }`}
+            style={isDarkMode ? { backgroundColor: '#120c13' } : { backgroundColor: '#e3dac9' }}
+          >
+            <button
+              onClick={() => setViewMode('2d')}
+              className={`px-3 py-1.5 transition-colors ${
+                viewMode === '2d'
+                  ? isDarkMode
+                    ? 'bg-[#2D1E2F] text-[#fff7cc]'
+                    : 'bg-[#f3ea98] text-[#2D1E2F]'
+                  : isDarkMode
+                    ? 'text-[#9f8f58] hover:text-[#fff7cc]'
+                    : 'text-[#978850] hover:text-[#2D1E2F]'
+              }`}
+            >
+              2D
+            </button>
+            <button
+              onClick={() => setViewMode('3d')}
+              className={`px-3 py-1.5 transition-colors ${
+                viewMode === '3d'
+                  ? isDarkMode
+                    ? 'bg-[#2D1E2F] text-[#fff7cc]'
+                    : 'bg-[#f3ea98] text-[#2D1E2F]'
+                  : isDarkMode
+                    ? 'text-[#9f8f58] hover:text-[#fff7cc]'
+                    : 'text-[#978850] hover:text-[#2D1E2F]'
+              }`}
+            >
+              3D
+            </button>
+          </div>
         </div>
 
         {/* Sidebar */}

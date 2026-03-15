@@ -496,151 +496,151 @@ id,risk,riskScore,txCount,pattern,aiExplanation,role,cluster
 804608090,laundering,0.5506610870361328,14,,TOBEFILLED,,1
 8051B1CE0,laundering,0.5497966408729553,16,,TOBEFILLED,,1
 806B46C90,laundering,0.5078437328338623,8,,TOBEFILLED,,1
-8133E6A90,suspicious,0.4985072910785675,18,,TOBEFILLED,,1
-8042B6180,suspicious,0.49809005856513977,54,,TOBEFILLED,,1
-811193BE0,suspicious,0.4952712953090668,11,,TOBEFILLED,,1
-813AA07B0,suspicious,0.4934050738811493,16,,TOBEFILLED,,1
-804AF90B0,suspicious,0.49263185262680054,28,,TOBEFILLED,,1
-808E9DF20,suspicious,0.49038851261138916,32,,TOBEFILLED,,1
-802B24920,suspicious,0.48937973380088806,40,,TOBEFILLED,,1
-809A11510,suspicious,0.4891212284564972,19,,TOBEFILLED,,1
-80A897220,suspicious,0.48612046241760254,24,,TOBEFILLED,,1
-8089DAA80,suspicious,0.48533934354782104,17,,TOBEFILLED,,1
-80D0F1330,suspicious,0.48417770862579346,25,,TOBEFILLED,,1
-8135AC580,suspicious,0.48191726207733154,9,,TOBEFILLED,,1
-8048710B0,suspicious,0.4798106253147125,92,,TOBEFILLED,,1
-803726BD0,suspicious,0.47918328642845154,3,,TOBEFILLED,,1
-80D445040,suspicious,0.4782922863960266,23,,TOBEFILLED,,1
-809BD9A90,suspicious,0.47510865330696106,35,,TOBEFILLED,,1
-81025CF20,suspicious,0.4721985161304474,32,,TOBEFILLED,,1
-8081A4F70,suspicious,0.4678199887275696,36,,TOBEFILLED,,1
-800DDBCA0,suspicious,0.46731534600257874,78,,TOBEFILLED,,1
-80ED6F3B0,suspicious,0.4664398729801178,18,,TOBEFILLED,,1
-80BD687B0,suspicious,0.46609440445899963,23,,TOBEFILLED,,1
-80B4552A0,suspicious,0.4642437696456909,18,,TOBEFILLED,,1
-801A8AFC0,suspicious,0.4628707766532898,10,,TOBEFILLED,,1
-801975B10,suspicious,0.4613293409347534,92,,TOBEFILLED,,1
-805F005D0,suspicious,0.4611237943172455,16,,TOBEFILLED,,1
-811135C30,suspicious,0.45925888419151306,4,,TOBEFILLED,,1
-814602880,suspicious,0.4575425088405609,32,,TOBEFILLED,,1
-8003C1220,suspicious,0.45540639758110046,155,,TOBEFILLED,,1
-802E49E50,suspicious,0.4529348611831665,101,,TOBEFILLED,,1
-80CF06BA0,suspicious,0.4524359703063965,29,,TOBEFILLED,,1
-8133C0470,suspicious,0.4522671401500702,21,,TOBEFILLED,,1
-8120B6C60,suspicious,0.45068496465682983,11,,TOBEFILLED,,1
-804D34DF0,suspicious,0.45022323727607727,29,,TOBEFILLED,,1
-809C08810,suspicious,0.44374480843544006,22,,TOBEFILLED,,1
-8122AB320,suspicious,0.4419952929019928,11,,TOBEFILLED,,1
-811483910,suspicious,0.440205454826355,8,,TOBEFILLED,,1
-802FA6CB0,suspicious,0.4352288544178009,43,,TOBEFILLED,,1
-813992700,suspicious,0.43250253796577454,28,,TOBEFILLED,,1
-801659930,suspicious,0.4301817715167999,43,,TOBEFILLED,,1
-80E735BE0,suspicious,0.42904385924339294,22,,TOBEFILLED,,1
-804993DF0,suspicious,0.4269414246082306,32,,TOBEFILLED,,1
-805DD8FB0,suspicious,0.42491257190704346,54,,TOBEFILLED,,1
-80E2FD770,suspicious,0.42112162709236145,73,,TOBEFILLED,,1
-800704C30,suspicious,0.4185454547405243,4,,TOBEFILLED,,1
-80E0F3A20,suspicious,0.41800928115844727,3,,TOBEFILLED,,1
-809EBA250,suspicious,0.41763177514076233,52,,TOBEFILLED,,1
-802667790,suspicious,0.4173412621021271,71,,TOBEFILLED,,1
-800F5ACA0,suspicious,0.41567862033843994,19,,TOBEFILLED,,1
-8075EE2C0,suspicious,0.4138658046722412,66,,TOBEFILLED,,1
-8035F9EA0,suspicious,0.41322365403175354,55,,TOBEFILLED,,1
-8054BAE90,suspicious,0.41001009941101074,70,,TOBEFILLED,,1
-804076300,suspicious,0.40928563475608826,48,,TOBEFILLED,,1
-8002FC7F0,suspicious,0.4079086184501648,88,,TOBEFILLED,,1
-8114A1B00,suspicious,0.40116086602211,11,,TOBEFILLED,,1
-80833C6E0,suspicious,0.39888066053390503,53,,TOBEFILLED,,1
-800AE7920,suspicious,0.39536991715431213,47,,TOBEFILLED,,1
-8077FAB60,suspicious,0.39470916986465454,38,,TOBEFILLED,,1
-8004825B0,suspicious,0.39470013976097107,182,,TOBEFILLED,,1
-8065FA080,suspicious,0.3906390964984894,45,,TOBEFILLED,,1
-803BF4FA0,suspicious,0.3872238099575043,11,,TOBEFILLED,,1
-806D118E0,suspicious,0.3858122229576111,70,,TOBEFILLED,,1
-80BFECD30,suspicious,0.3853094279766083,21,,TOBEFILLED,,1
-801244990,suspicious,0.3822895288467407,69,,TOBEFILLED,,1
-8012480E0,suspicious,0.3822861313819885,64,,TOBEFILLED,,1
-80B392930,suspicious,0.3801942467689514,60,,TOBEFILLED,,1
-8062F6110,suspicious,0.3794657289981842,42,,TOBEFILLED,,1
-800C4BB70,suspicious,0.3785409927368164,26,,TOBEFILLED,,1
-80625E0C0,suspicious,0.3759126663208008,17,,TOBEFILLED,,1
-8077EB7D0,suspicious,0.37354180216789246,53,,TOBEFILLED,,1
-8130A8890,suspicious,0.37009143829345703,18,,TOBEFILLED,,1
-804D2F1E0,suspicious,0.3688337802886963,51,,TOBEFILLED,,1
-80BD21A20,suspicious,0.3676290214061737,53,,TOBEFILLED,,1
-8084FE230,suspicious,0.3653753101825714,45,,TOBEFILLED,,1
-805DD05A0,suspicious,0.3646264374256134,37,,TOBEFILLED,,1
-802398D20,suspicious,0.36364006996154785,70,,TOBEFILLED,,1
-80C752540,suspicious,0.36280664801597595,33,,TOBEFILLED,,1
-805FF1DB0,suspicious,0.3599470853805542,80,,TOBEFILLED,,1
-80108EAA0,suspicious,0.35889485478401184,27,,TOBEFILLED,,1
-80137F410,suspicious,0.35656771063804626,8,,TOBEFILLED,,1
-8079FF4E0,suspicious,0.3551400899887085,69,,TOBEFILLED,,1
-813E6C170,suspicious,0.352019727230072,11,,TOBEFILLED,,1
-8106CF470,suspicious,0.3470170199871063,23,,TOBEFILLED,,1
-801B69BA0,suspicious,0.33495908975601196,21,,TOBEFILLED,,1
-80E1B1140,suspicious,0.332985520362854,21,,TOBEFILLED,,1
-8119C88E0,suspicious,0.3313102722167969,13,,TOBEFILLED,,1
-8139B8690,suspicious,0.32997941970825195,11,,TOBEFILLED,,1
-80C133400,suspicious,0.313271164894104,11,,TOBEFILLED,,1
-8109BDC80,suspicious,0.3054525554180145,13,,TOBEFILLED,,1
-806838E50,suspicious,0.3007175624370575,11,,TOBEFILLED,,1
-811139990,suspicious,0.29916563630104065,11,,TOBEFILLED,,1
-80FE46A10,suspicious,0.29829660058021545,11,,TOBEFILLED,,1
-80F111750,suspicious,0.29701361060142517,11,,TOBEFILLED,,1
-80BF756E0,suspicious,0.2898448705673218,11,,TOBEFILLED,,1
-8042943C0,suspicious,0.28793928027153015,71,,TOBEFILLED,,1
-812B7DB60,suspicious,0.28624019026756287,11,,TOBEFILLED,,1
-80E1D5220,suspicious,0.2675611078739166,13,,TOBEFILLED,,1
-813037F80,suspicious,0.25249218940734863,18,,TOBEFILLED,,1
-8103F6190,suspicious,0.2511322498321533,11,,TOBEFILLED,,1
-8027A6A50,suspicious,0.240910604596138,5,,TOBEFILLED,,1
-80D8AE060,suspicious,0.24055323004722595,31,,TOBEFILLED,,1
-81215D230,suspicious,0.23811160027980804,11,,TOBEFILLED,,1
-8079C45C0,suspicious,0.23788386583328247,31,,TOBEFILLED,,1
-80DBB5300,suspicious,0.23651641607284546,11,,TOBEFILLED,,1
-80E11BDF1,normal,0.1896965354681015,20,,TOBEFILLED,,1
-802869CA0,normal,0.18911224603652954,27,,TOBEFILLED,,1
-812A12A80,normal,0.16925542056560516,4,,TOBEFILLED,,1
-800D0D0D0,normal,0.1579228639602661,3,,TOBEFILLED,,1
-80979AF40,normal,0.14919371902942657,11,,TOBEFILLED,,1
-80DF064A0,normal,0.14026695489883423,3,,TOBEFILLED,,1
-802A5F760,normal,0.13977296650409698,2,,TOBEFILLED,,1
-802C00CB0,normal,0.13714678585529327,2,,TOBEFILLED,,1
-806A36980,normal,0.1357068419456482,2,,TOBEFILLED,,1
-810EFF0D0,normal,0.1353868693113327,11,,TOBEFILLED,,1
-807DA7820,normal,0.12990929186344147,2,,TOBEFILLED,,1
-8044CAE90,normal,0.12932759523391724,2,,TOBEFILLED,,1
-80599E260,normal,0.12893988192081451,2,,TOBEFILLED,,1
-807206FC0,normal,0.1276436448097229,2,,TOBEFILLED,,1
-80F2742B0,normal,0.12670746445655823,2,,TOBEFILLED,,1
-801F71F80,normal,0.12602826952934265,2,,TOBEFILLED,,1
-80AB2EE00,normal,0.12402277439832687,2,,TOBEFILLED,,1
-8087F95B0,normal,0.12295246124267578,1,,TOBEFILLED,,1
-8017F4CB0,normal,0.12270839512348175,2,,TOBEFILLED,,1
-80AC9A2D0,normal,0.12077663093805313,2,,TOBEFILLED,,1
-80B38E630,normal,0.12005831301212311,2,,TOBEFILLED,,1
-80359E660,normal,0.11954504251480103,1,,TOBEFILLED,,1
-80735CB80,normal,0.11918500810861588,1,,TOBEFILLED,,1
-80F2E1080,normal,0.11910422146320343,2,,TOBEFILLED,,1
-8135B8420,normal,0.1188877522945404,2,,TOBEFILLED,,1
-812FC8110,normal,0.11603549122810364,2,,TOBEFILLED,,1
-80E26F840,normal,0.1160312369465828,2,,TOBEFILLED,,1
-80841C790,normal,0.11562985926866531,2,,TOBEFILLED,,1
-8075C9790,normal,0.11403820663690567,2,,TOBEFILLED,,1
-80B28CCA0,normal,0.1137552484869957,2,,TOBEFILLED,,1
-80908D030,normal,0.1133551299571991,2,,TOBEFILLED,,1
-8066E5550,normal,0.11298000812530518,2,,TOBEFILLED,,1
-80F908900,normal,0.11257623136043549,2,,TOBEFILLED,,1
-809C88580,normal,0.11255145817995071,2,,TOBEFILLED,,1
-80093DD00,normal,0.11146912723779678,1,,TOBEFILLED,,1
-811766070,normal,0.11143447458744049,2,,TOBEFILLED,,1
-80D003AB0,normal,0.11058244109153748,2,,TOBEFILLED,,1
-80FEDC3A0,normal,0.10729065537452698,2,,TOBEFILLED,,1
-811730F00,normal,0.10620040446519852,2,,TOBEFILLED,,1
-8036AFE30,normal,0.10589929670095444,2,,TOBEFILLED,,1
-80AE58B00,normal,0.1041010245680809,1,,TOBEFILLED,,1
-80B4AA900,normal,0.10376115143299103,2,,TOBEFILLED,,1
-810598E90,normal,0.10291134566068649,2,,TOBEFILLED,,1
-81281B8E0,normal,0.10198124498128891,1,,TOBEFILLED,,1
-801832F80,normal,0.012850329279899597,36,,TOBEFILLED,,1
+8133E6A90,suspicious,0.4985072910785675,18,,No anomalies detected. Account activity within normal parameters.,,1
+8042B6180,suspicious,0.4980900585651397,54,,No anomalies detected. Account activity within normal parameters.,,1
+811193BE0,suspicious,0.4952712953090668,11,,No anomalies detected. Account activity within normal parameters.,,1
+813AA07B0,suspicious,0.4934050738811493,16,,No anomalies detected. Account activity within normal parameters.,,1
+804AF90B0,suspicious,0.4926318526268005,28,,No anomalies detected. Account activity within normal parameters.,,1
+808E9DF20,suspicious,0.4903885126113891,32,,No anomalies detected. Account activity within normal parameters.,,1
+802B24920,suspicious,0.489379733800888,40,,No anomalies detected. Account activity within normal parameters.,,1
+809A11510,suspicious,0.4891212284564972,19,,No anomalies detected. Account activity within normal parameters.,,1
+80A897220,suspicious,0.4861204624176025,24,,No anomalies detected. Account activity within normal parameters.,,1
+8089DAA80,suspicious,0.485339343547821,17,,No anomalies detected. Account activity within normal parameters.,,1
+80D0F1330,suspicious,0.4841777086257934,25,,No anomalies detected. Account activity within normal parameters.,,1
+8135AC580,suspicious,0.4819172620773315,9,,No anomalies detected. Account activity within normal parameters.,,1
+8048710B0,suspicious,0.4798106253147125,92,,No anomalies detected. Account activity within normal parameters.,,1
+803726BD0,suspicious,0.4791832864284515,3,,No anomalies detected. Account activity within normal parameters.,,1
+80D445040,suspicious,0.4782922863960266,23,,No anomalies detected. Account activity within normal parameters.,,1
+809BD9A90,suspicious,0.475108653306961,35,,No anomalies detected. Account activity within normal parameters.,,1
+81025CF20,suspicious,0.4721985161304474,32,,No anomalies detected. Account activity within normal parameters.,,1
+8081A4F70,suspicious,0.4678199887275696,36,,No anomalies detected. Account activity within normal parameters.,,1
+800DDBCA0,suspicious,0.4673153460025787,78,,No anomalies detected. Account activity within normal parameters.,,1
+80ED6F3B0,suspicious,0.4664398729801178,18,,No anomalies detected. Account activity within normal parameters.,,1
+80BD687B0,suspicious,0.4660944044589996,23,,No anomalies detected. Account activity within normal parameters.,,1
+80B4552A0,suspicious,0.4642437696456909,18,,No anomalies detected. Account activity within normal parameters.,,1
+801A8AFC0,suspicious,0.4628707766532898,10,,No anomalies detected. Account activity within normal parameters.,,1
+801975B10,suspicious,0.4613293409347534,92,,No anomalies detected. Account activity within normal parameters.,,1
+805F005D0,suspicious,0.4611237943172455,16,,No anomalies detected. Account activity within normal parameters.,,1
+811135C30,suspicious,0.459258884191513,4,,No anomalies detected. Account activity within normal parameters.,,1
+814602880,suspicious,0.4575425088405609,32,,No anomalies detected. Account activity within normal parameters.,,1
+8003C1220,suspicious,0.4554063975811004,155,,No anomalies detected. Account activity within normal parameters.,,1
+802E49E50,suspicious,0.4529348611831665,101,,No anomalies detected. Account activity within normal parameters.,,1
+80CF06BA0,suspicious,0.4524359703063965,29,,No anomalies detected. Account activity within normal parameters.,,1
+8133C0470,suspicious,0.4522671401500702,21,,No anomalies detected. Account activity within normal parameters.,,1
+8120B6C60,suspicious,0.4506849646568298,11,,No anomalies detected. Account activity within normal parameters.,,1
+804D34DF0,suspicious,0.4502232372760772,29,,No anomalies detected. Account activity within normal parameters.,,1
+809C08810,suspicious,0.44374480843544,22,,No anomalies detected. Account activity within normal parameters.,,1
+8122AB320,suspicious,0.4419952929019928,11,,No anomalies detected. Account activity within normal parameters.,,1
+811483910,suspicious,0.440205454826355,8,,No anomalies detected. Account activity within normal parameters.,,1
+802FA6CB0,suspicious,0.4352288544178009,43,,No anomalies detected. Account activity within normal parameters.,,1
+813992700,suspicious,0.4325025379657745,28,,No anomalies detected. Account activity within normal parameters.,,1
+801659930,suspicious,0.4301817715167999,43,,No anomalies detected. Account activity within normal parameters.,,1
+80E735BE0,suspicious,0.4290438592433929,22,,No anomalies detected. Account activity within normal parameters.,,1
+804993DF0,suspicious,0.4269414246082306,32,,No anomalies detected. Account activity within normal parameters.,,1
+805DD8FB0,suspicious,0.4249125719070434,54,,No anomalies detected. Account activity within normal parameters.,,1
+80E2FD770,suspicious,0.4211216270923614,73,,No anomalies detected. Account activity within normal parameters.,,1
+800704C30,suspicious,0.4185454547405243,4,,No anomalies detected. Account activity within normal parameters.,,1
+80E0F3A20,suspicious,0.4180092811584472,3,,No anomalies detected. Account activity within normal parameters.,,1
+809EBA250,suspicious,0.4176317751407623,52,,No anomalies detected. Account activity within normal parameters.,,1
+802667790,suspicious,0.4173412621021271,71,,No anomalies detected. Account activity within normal parameters.,,1
+800F5ACA0,suspicious,0.4156786203384399,19,,No anomalies detected. Account activity within normal parameters.,,1
+8075EE2C0,suspicious,0.4138658046722412,66,,No anomalies detected. Account activity within normal parameters.,,1
+8035F9EA0,suspicious,0.4132236540317535,55,,No anomalies detected. Account activity within normal parameters.,,1
+8054BAE90,suspicious,0.4100100994110107,70,,No anomalies detected. Account activity within normal parameters.,,1
+804076300,suspicious,0.4092856347560882,48,,No anomalies detected. Account activity within normal parameters.,,1
+8002FC7F0,suspicious,0.4079086184501648,88,,No anomalies detected. Account activity within normal parameters.,,1
+8114A1B00,suspicious,0.40116086602211,11,,No anomalies detected. Account activity within normal parameters.,,1
+80833C6E0,suspicious,0.398880660533905,53,,No anomalies detected. Account activity within normal parameters.,,1
+800AE7920,suspicious,0.3953699171543121,47,,No anomalies detected. Account activity within normal parameters.,,1
+8077FAB60,suspicious,0.3947091698646545,38,,No anomalies detected. Account activity within normal parameters.,,1
+8004825B0,suspicious,0.394700139760971,182,,No anomalies detected. Account activity within normal parameters.,,1
+8065FA080,suspicious,0.3906390964984894,45,,No anomalies detected. Account activity within normal parameters.,,1
+803BF4FA0,suspicious,0.3872238099575043,11,,No anomalies detected. Account activity within normal parameters.,,1
+806D118E0,suspicious,0.3858122229576111,70,,No anomalies detected. Account activity within normal parameters.,,1
+80BFECD30,suspicious,0.3853094279766083,21,,No anomalies detected. Account activity within normal parameters.,,1
+801244990,suspicious,0.3822895288467407,69,,No anomalies detected. Account activity within normal parameters.,,1
+8012480E0,suspicious,0.3822861313819885,64,,No anomalies detected. Account activity within normal parameters.,,1
+80B392930,suspicious,0.3801942467689514,60,,No anomalies detected. Account activity within normal parameters.,,1
+8062F6110,suspicious,0.3794657289981842,42,,No anomalies detected. Account activity within normal parameters.,,1
+800C4BB70,suspicious,0.3785409927368164,26,,No anomalies detected. Account activity within normal parameters.,,1
+80625E0C0,suspicious,0.3759126663208008,17,,No anomalies detected. Account activity within normal parameters.,,1
+8077EB7D0,suspicious,0.3735418021678924,53,,No anomalies detected. Account activity within normal parameters.,,1
+8130A8890,suspicious,0.370091438293457,18,,No anomalies detected. Account activity within normal parameters.,,1
+804D2F1E0,suspicious,0.3688337802886963,51,,No anomalies detected. Account activity within normal parameters.,,1
+80BD21A20,suspicious,0.3676290214061737,53,,No anomalies detected. Account activity within normal parameters.,,1
+8084FE230,suspicious,0.3653753101825714,45,,No anomalies detected. Account activity within normal parameters.,,1
+805DD05A0,suspicious,0.3646264374256134,37,,No anomalies detected. Account activity within normal parameters.,,1
+802398D20,suspicious,0.3636400699615478,70,,No anomalies detected. Account activity within normal parameters.,,1
+80C752540,suspicious,0.3628066480159759,33,,No anomalies detected. Account activity within normal parameters.,,1
+805FF1DB0,suspicious,0.3599470853805542,80,,No anomalies detected. Account activity within normal parameters.,,1
+80108EAA0,suspicious,0.3588948547840118,27,,No anomalies detected. Account activity within normal parameters.,,1
+80137F410,suspicious,0.3565677106380462,8,,No anomalies detected. Account activity within normal parameters.,,1
+8079FF4E0,suspicious,0.3551400899887085,69,,No anomalies detected. Account activity within normal parameters.,,1
+813E6C170,suspicious,0.352019727230072,11,,No anomalies detected. Account activity within normal parameters.,,1
+8106CF470,suspicious,0.3470170199871063,23,,No anomalies detected. Account activity within normal parameters.,,1
+801B69BA0,suspicious,0.3349590897560119,21,,No anomalies detected. Account activity within normal parameters.,,1
+80E1B1140,suspicious,0.332985520362854,21,,No anomalies detected. Account activity within normal parameters.,,1
+8119C88E0,suspicious,0.3313102722167969,13,,No anomalies detected. Account activity within normal parameters.,,1
+8139B8690,suspicious,0.3299794197082519,11,,No anomalies detected. Account activity within normal parameters.,,1
+80C133400,suspicious,0.313271164894104,11,,No anomalies detected. Account activity within normal parameters.,,1
+8109BDC80,suspicious,0.3054525554180145,13,,No anomalies detected. Account activity within normal parameters.,,1
+806838E50,suspicious,0.3007175624370575,11,,No anomalies detected. Account activity within normal parameters.,,1
+811139990,suspicious,0.2991656363010406,11,,No anomalies detected. Account activity within normal parameters.,,1
+80FE46A10,suspicious,0.2982966005802154,11,,No anomalies detected. Account activity within normal parameters.,,1
+80F111750,suspicious,0.2970136106014251,11,,No anomalies detected. Account activity within normal parameters.,,1
+80BF756E0,suspicious,0.2898448705673218,11,,No anomalies detected. Account activity within normal parameters.,,1
+8042943C0,suspicious,0.2879392802715301,71,,No anomalies detected. Account activity within normal parameters.,,1
+812B7DB60,suspicious,0.2862401902675628,11,,No anomalies detected. Account activity within normal parameters.,,1
+80E1D5220,suspicious,0.2675611078739166,13,,No anomalies detected. Account activity within normal parameters.,,1
+813037F80,suspicious,0.2524921894073486,18,,No anomalies detected. Account activity within normal parameters.,,1
+8103F6190,suspicious,0.2511322498321533,11,,No anomalies detected. Account activity within normal parameters.,,1
+8027A6A50,suspicious,0.240910604596138,5,,No anomalies detected. Account activity within normal parameters.,,1
+80D8AE060,suspicious,0.2405532300472259,31,,No anomalies detected. Account activity within normal parameters.,,1
+81215D230,suspicious,0.238111600279808,11,,No anomalies detected. Account activity within normal parameters.,,1
+8079C45C0,suspicious,0.2378838658332824,31,,No anomalies detected. Account activity within normal parameters.,,1
+80DBB5300,suspicious,0.2365164160728454,11,,No anomalies detected. Account activity within normal parameters.,,1
+80E11BDF1,normal,0.1896965354681015,20,,No anomalies detected. Account activity within normal parameters.,,1
+802869CA0,normal,0.1891122460365295,27,,No anomalies detected. Account activity within normal parameters.,,1
+812A12A80,normal,0.1692554205656051,4,,No anomalies detected. Account activity within normal parameters.,,1
+800D0D0D0,normal,0.1579228639602661,3,,No anomalies detected. Account activity within normal parameters.,,1
+80979AF40,normal,0.1491937190294265,11,,No anomalies detected. Account activity within normal parameters.,,1
+80DF064A0,normal,0.1402669548988342,3,,No anomalies detected. Account activity within normal parameters.,,1
+802A5F760,normal,0.1397729665040969,2,,No anomalies detected. Account activity within normal parameters.,,1
+802C00CB0,normal,0.1371467858552932,2,,No anomalies detected. Account activity within normal parameters.,,1
+806A36980,normal,0.1357068419456482,2,,No anomalies detected. Account activity within normal parameters.,,1
+810EFF0D0,normal,0.1353868693113327,11,,No anomalies detected. Account activity within normal parameters.,,1
+807DA7820,normal,0.1299092918634414,2,,No anomalies detected. Account activity within normal parameters.,,1
+8044CAE90,normal,0.1293275952339172,2,,No anomalies detected. Account activity within normal parameters.,,1
+80599E260,normal,0.1289398819208145,2,,No anomalies detected. Account activity within normal parameters.,,1
+807206FC0,normal,0.1276436448097229,2,,No anomalies detected. Account activity within normal parameters.,,1
+80F2742B0,normal,0.1267074644565582,2,,No anomalies detected. Account activity within normal parameters.,,1
+801F71F80,normal,0.1260282695293426,2,,No anomalies detected. Account activity within normal parameters.,,1
+80AB2EE00,normal,0.1240227743983268,2,,No anomalies detected. Account activity within normal parameters.,,1
+8087F95B0,normal,0.1229524612426757,1,,No anomalies detected. Account activity within normal parameters.,,1
+8017F4CB0,normal,0.1227083951234817,2,,No anomalies detected. Account activity within normal parameters.,,1
+80AC9A2D0,normal,0.1207766309380531,2,,No anomalies detected. Account activity within normal parameters.,,1
+80B38E630,normal,0.1200583130121231,2,,No anomalies detected. Account activity within normal parameters.,,1
+80359E660,normal,0.119545042514801,1,,No anomalies detected. Account activity within normal parameters.,,1
+80735CB80,normal,0.1191850081086158,1,,No anomalies detected. Account activity within normal parameters.,,1
+80F2E1080,normal,0.1191042214632034,2,,No anomalies detected. Account activity within normal parameters.,,1
+8135B8420,normal,0.1188877522945404,2,,No anomalies detected. Account activity within normal parameters.,,1
+812FC8110,normal,0.1160354912281036,2,,No anomalies detected. Account activity within normal parameters.,,1
+80E26F840,normal,0.1160312369465828,2,,No anomalies detected. Account activity within normal parameters.,,1
+80841C790,normal,0.1156298592686653,2,,No anomalies detected. Account activity within normal parameters.,,1
+8075C9790,normal,0.1140382066369056,2,,No anomalies detected. Account activity within normal parameters.,,1
+80B28CCA0,normal,0.1137552484869957,2,,No anomalies detected. Account activity within normal parameters.,,1
+80908D030,normal,0.1133551299571991,2,,No anomalies detected. Account activity within normal parameters.,,1
+8066E5550,normal,0.1129800081253051,2,,No anomalies detected. Account activity within normal parameters.,,1
+80F908900,normal,0.1125762313604354,2,,No anomalies detected. Account activity within normal parameters.,,1
+809C88580,normal,0.1125514581799507,2,,No anomalies detected. Account activity within normal parameters.,,1
+80093DD00,normal,0.1114691272377967,1,,No anomalies detected. Account activity within normal parameters.,,1
+811766070,normal,0.1114344745874404,2,,No anomalies detected. Account activity within normal parameters.,,1
+80D003AB0,normal,0.1105824410915374,2,,No anomalies detected. Account activity within normal parameters.,,1
+80FEDC3A0,normal,0.1072906553745269,2,,No anomalies detected. Account activity within normal parameters.,,1
+811730F00,normal,0.1062004044651985,2,,No anomalies detected. Account activity within normal parameters.,,1
+8036AFE30,normal,0.1058992967009544,2,,No anomalies detected. Account activity within normal parameters.,,1
+80AE58B00,normal,0.1041010245680809,1,,No anomalies detected. Account activity within normal parameters.,,1
+80B4AA900,normal,0.103761151432991,2,,No anomalies detected. Account activity within normal parameters.,,1
+810598E90,normal,0.1029113456606864,2,,No anomalies detected. Account activity within normal parameters.,,1
+81281B8E0,normal,0.1019812449812889,1,,No anomalies detected. Account activity within normal parameters.,,1
+801832F80,normal,0.0128503292798995,36,,No anomalies detected. Account activity within normal parameters.,,1
